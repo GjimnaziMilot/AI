@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gjimnazi Milot - Faqja Zyrtare</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="AI.css">
+    <link rel="stylesheet" href="gjimnazimilot.css">
 </head>
 <body>
 
@@ -133,8 +133,8 @@ Viti mësimor 1987-1988 shënon dhe fillimin e arsimit të mesëm të përgjiths
         const mesazhiPritjes = shtoMesazh("<i>Duke menduar...</i>", 'bot-msg');
 
         try {
-            // Thirrja i bëhet serverit të Render prapaskenë
-            const response = await fetch('/api/chat', {
+            // LIDHJA E RE: Tani kërkesa shkon specifikisht te serveri yt në Render
+            const response = await fetch('https://gjimnazi-milot.onrender.com/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ pyetja: pyetja })
