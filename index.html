@@ -44,7 +44,7 @@
         <span class="icon-bar" style="background-color: white;"></span>
         <span class="icon-bar" style="background-color: white;"></span>                        
       </button>
-      <a class="navbar-brand" href="index.html">Gjimnazi Milot</a>
+      <a class="navbar-brand" href="#">Gjimnazi Milot</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
@@ -107,45 +107,53 @@ Viti mësimor 1987-1988 shënon dhe fillimin e arsimit të mesëm të përgjiths
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<script>
-    // NDËRRO KËTË URL me linkun që do të jep Render pasi ta bësh deploy Backend-in!
-    const RENDER_BACKEND_URL = "https://ai-3i8m.onrender.com/chat"; 
+<script type="module">
+    import { GoogleGenAI } from "https://esm.run/@google/genai";
 
-    function toggleChat() {
+    // VENDOS KËTU KODIN TËND TË LIGJSHËM QË KOPJOVE NGA GOOGLE AI STUDIO
+    const API_KEY = "VENDOS_KËTU_API_KEY_TËND"; 
+
+    const ai = new GoogleGenAI({ apiKey: API_KEY });
+
+    const CONTEXT = `Ti je asistenti virtual zyrtar i Gjimnazit Milot. Përgjigju në mënyrë të sjellshme, ndihmuese dhe shkurt në gjuhën shqipe.
+    Informacione rreth shkollës:
+    - Historia: Viti shkollor 1971-1972 u hap Shkolla e Mesme pa shkëputje nga puna (dega Agronomi). Në vitin 1986-1987 u vu në punë ndërtesa e re e shkollës (Gjimnazi i sotëm). Viti 1987-1988 shënon fillimin e arsimit të mesëm të përgjithshëm në Milot.
+    - Kontakti: Email zyrtar është milotgjimnazi@yahoo.com.
+    - Aktivitetet: Shkolla organizon Festivalin e Shkencave, Olimpiada, etj.
+    Nëse të pyesin për gjëra që nuk i di, drejtoji tek faqja e kontaktit ose tek stafi i shkollës.`;
+
+    window.toggleChat = function() {
         const chat = document.getElementById('chatContainer');
         chat.style.display = (chat.style.display === 'none' || chat.style.display === '') ? 'flex' : 'none';
     }
 
-    function handleKeyPress(e) {
+    window.handleKeyPress = function(e) {
         if (e.key === 'Enter') sendMessage();
     }
 
-    async function sendMessage() {
+    window.sendMessage = async function() {
         const input = document.getElementById('chatInput');
         const messageText = input.value.trim();
         if (!messageText) return;
 
-        // Shfaq mesazhin e përdoruesit në ekran
         appendMessage(messageText, 'user-msg');
         input.value = '';
 
-        // Shfaq një mesazh të përkohshëm sikur bot-i po mendon
         const loadingId = appendMessage('Duke menduar...', 'bot-msg');
 
         try {
-            const response = await fetch(RENDER_BACKEND_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: messageText })
+            // Thirrja direkte e modelit pa kaluar nga Render
+            const response = await ai.models.generateContent({
+                model: 'gemini-1.5-flash',
+                contents: `${CONTEXT}\n\nPërdoruesi pyet: ${messageText}\nAsistenti:`,
             });
-            const data = await response.json();
             
-            // Hiq mesazhin "duke menduar" dhe vendos përgjigjen e saktë
             document.getElementById(loadingId).remove();
-            appendMessage(data.reply, 'bot-msg');
+            appendMessage(response.text, 'bot-msg');
         } catch (error) {
+            console.error(error);
             document.getElementById(loadingId).remove();
-            appendMessage('Ndodhi një gabim në lidhje me serverin.', 'bot-msg');
+            appendMessage('Më falni, pati një problem teknik me shërbimin AI.', 'bot-msg');
         }
     }
 
@@ -157,7 +165,7 @@ Viti mësimor 1987-1988 shënon dhe fillimin e arsimit të mesëm të përgjiths
         messageBubble.className = `message ${className}`;
         messageBubble.innerText = text;
         messagesDiv.appendChild(messageBubble);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight; // Autoscroll poshtë
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
         return id;
     }
 </script>
