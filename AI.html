@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gjimnazi Milot - Faqja Zyrtare</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="AI.css">
+</head>
+<body>
+
+<nav class="navbar navbar-custom">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar" style="background-color: white;"></span>
+        <span class="icon-bar" style="background-color: white;"></span>
+        <span class="icon-bar" style="background-color: white;"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">Gjimnazi Milot</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="njof.html">Njoftime</a></li>
+        <li><a href="matura.html">Matura Shtetërore</a></li>
+        <li><a href="Organizimi.html">Organizimi i shkollës</a></li>
+        <li><a href="aktivitete.html">Aktivitete</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="hero-section">
+  <img src="gjimnazimilotfoto.jpeg" alt="Gjimnazi Milot" class="hero-image">
+</div>
+
+<div class="container seksion-informacion">
+  <div class="row">
+    <div class="col-md-8">
+      <h2>Historiku i shkollës</h2>
+      <p>Viti shkollor 1971-1972 ka hyrë në historinë e kësaj shkolle si një vit tepër i veçantë, sepse për herë të parë u hap Shkolla e Mesme pa shkëputje nga puna, dega Agronomi.
+Në vitin mësimor 1986-1987 u vu në punë ndërtesa e re e shkollës, sot Gjimnazi. Deri në këtë periudhë funksiononte Shkolla e Mesme e Bashkuar (8-vjeçare +bujqësore 4 vjeçare me/pa shkëputje nga puna).   
+Viti mësimor 1987-1988 shënon dhe fillimin e arsimit të mesëm të përgjithshëm në Milot.
+</p>
+    </div>
+    <div class="col-md-4">
+      <div class="panel-lajme">
+        <h4>Aktivitetet e Fundit</h4>
+        <ul>
+            <li>Festivali i Shkencave</li>
+            <li>Olimpiadat</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer-serioz text-center">
+  <p>2026 Gjimnazi Milot. Të gjitha të drejtat e rezervuara.</p>
+  <a href="mailto:milotgjimnazi@yahoo.com">Email: milotgjimnazi@yahoo.com</a>
+</footer>
+
+<div class="gemini-chat-container">
+    <button class="gemini-chat-btn" id="openGeminiBtn">💬 Asistenti Milot</button>
+    
+    <div class="gemini-chat-window" id="geminiWindow">
+        <div class="gemini-chat-header">
+            <span>Asistenti Virtual (Gemini AI)</span>
+            <button class="gemini-close-btn" id="closeGeminiBtn">&times;</button>
+        </div>
+        <div class="gemini-chat-messages" id="geminiMessages">
+            <div class="gemini-msg bot-msg">
+                Përshëndetje! Unë jam Inteligjenca Artificiale e Gjimnazit Milot. 🏫 Si mund t'ju ndihmoj sot? 
+                <br><br>
+                Mund të më pyesni për: <b>historikun, njoftimet, maturën shtetërore ose kontaktin</b>.
+            </div>
+        </div>
+        <div class="gemini-input-area">
+            <input type="text" id="geminiInput" placeholder="Shkruaj një pyetje këtu..." onkeypress="handleGeminiKey(event)">
+            <button id="geminiSendBtn">Dërgo</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .gemini-chat-container { position: fixed; bottom: 20px; right: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; z-index: 1000; }
+    .gemini-chat-btn { background-color: #003366; color: white; border: none; padding: 14px 22px; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); font-weight: bold; font-size: 15px; }
+    .gemini-chat-window { display: none; width: 360px; height: 480px; background-color: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; border: 1px solid #dadce0; }
+    .gemini-chat-header { background-color: #003366; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+    .gemini-close-btn { background: none; border: none; color: white; font-size: 22px; cursor: pointer; }
+    .gemini-chat-messages { flex: 1; padding: 15px; overflow-y: auto; background-color: #f8f9fa; display: flex; flex-direction: column; gap: 10px; }
+    .gemini-msg { padding: 10px 14px; border-radius: 8px; font-size: 14px; line-height: 1.5; max-width: 80%; word-wrap: break-word; }
+    .bot-msg { background-color: #e8f0fe; color: #1d1d1d; align-self: flex-start; }
+    .user-msg { background-color: #003366; color: white; align-self: flex-end; }
+    .gemini-input-area { display: flex; padding: 12px; border-top: 1px solid #dadce0; background: white; }
+    .gemini-input-area input { flex: 1; padding: 10px; border: 1px solid #dadce0; border-radius: 20px; outline: none; padding-left: 15px; color: black; }
+    .gemini-input-area button { background-color: #003366; color: white; border: none; padding: 0 18px; margin-left: 8px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script>
+    const openBtn = document.getElementById('openGeminiBtn');
+    const closeBtn = document.getElementById('closeGeminiBtn');
+    const chatWindow = document.getElementById('geminiWindow');
+    const sendBtn = document.getElementById('geminiSendBtn');
+    const userInput = document.getElementById('geminiInput');
+    const chatMessages = document.getElementById('geminiMessages');
+
+    openBtn.addEventListener('click', () => { chatWindow.style.display = 'flex'; openBtn.style.display = 'none'; });
+    closeBtn.addEventListener('click', () => { chatWindow.style.display = 'none'; openBtn.style.display = 'block'; });
+    sendBtn.addEventListener('click', komunikojMeBackend);
+    function handleGeminiKey(e) { if (e.key === 'Enter') komunikojMeBackend(); }
+
+    function shtoMesazh(text, lloji) {
+        const div = document.createElement('div');
+        div.className = `gemini-msg ${lloji}`;
+        div.innerHTML = text;
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return div;
+    }
+
+    async function komunikojMeBackend() {
+        const pyetja = userInput.value.trim();
+        if (pyetja === '') return;
+
+        shtoMesazh(pyetja, 'user-msg');
+        userInput.value = '';
+
+        const mesazhiPritjes = shtoMesazh("<i>Duke menduar...</i>", 'bot-msg');
+
+        try {
+            // Thirrja i bëhet serverit të Render prapaskenë
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pyetja: pyetja })
+            });
+
+            const data = await response.json();
+            mesazhiPritjes.innerHTML = data.text;
+
+        } catch (error) {
+            console.error("Gabim:", error);
+            mesazhiPritjes.innerHTML = "Ndodhi një gabim gjatë komunikimit me asistentin.";
+        }
+    }
+</script>
+
+</body>
+</html>
