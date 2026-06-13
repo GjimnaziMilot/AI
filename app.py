@@ -28,7 +28,7 @@ def chat():
         return jsonify({"error": "Mesazhi mungon"}), 400
 
     try:
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-1.5-flash')
         # Bashkojmë kontekstin e shkollës me pyetjen e përdoruesit
         full_prompt = f"{CONTEXT}\n\nPërdoruesi pyet: {user_message}\nAsistenti:"
         
