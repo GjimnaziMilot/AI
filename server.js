@@ -3,8 +3,25 @@ const cors = require('cors');
 
 const app = express();
 
-// Lejojmë CORS për të gjitha faqet që të mund të komunikojnë pa gabime me Render
-app.use(cors({ origin: '*' }));
+// 1. Mundësojmë CORS për të gjitha rrugët përmes paketës
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// 2. Blindim manual i CORS me Middleware për siguri maksimale
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
+    next();
+});
+
 app.use(express.json());
 
 const SYSTEM_INSTRUCTION = `
@@ -17,7 +34,7 @@ Rregullat dhe linket e orientimit:
 - Nëse pyesin për Maturën Shtetërore, dokumentet apo rregullat, thuaju të shkojnë te: <a href='matura.html'><b>Matura Shtetërore</b></a>.
 - Nëse kërkojnë kontaktin ose adresën e email-it, jepu 'milotgjimnazi@yahoo.com' ose orientoji te: <a href='kontakt.html'><b>Kontakt</b></a>.
 - Nëse pyesin për strukturën ose udhëheqjen e shkollës, orientoji te: <a href='Organizimi.html'><b>Organizimi i shkollës</b></a>.
-Nëse të bëjnë pyetje që nuk kanë lidhje fare med shkollën ose arsimin, ktheji me mirësjellje përsëri te tema e Gjimnazit Milot.
+Nëse të bëjnë pyetje që nuk kanë lidhje fare me shkollën ose arsimin, ktheji me mirësjellje përsëri te tema e Gjimnazit Milot.
 `;
 
 app.post('/api/chat', async (req, res) => {
