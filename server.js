@@ -1,13 +1,11 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 
 const app = express();
-app.use(cors());
-app.use(express.json());
 
-// Shërbe skedarët statikë të faqes sate
-app.use(express.static(path.join(__dirname, './')));
+// Lejojmë CORS për të gjitha faqet që të mund të komunikojnë pa gabime me Render
+app.use(cors({ origin: '*' }));
+app.use(express.json());
 
 const SYSTEM_INSTRUCTION = `
 Ti je Asistenti Virtual zyrtar me Inteligjencë Artificiale i Gjimnazit Milot.
@@ -19,12 +17,11 @@ Rregullat dhe linket e orientimit:
 - Nëse pyesin për Maturën Shtetërore, dokumentet apo rregullat, thuaju të shkojnë te: <a href='matura.html'><b>Matura Shtetërore</b></a>.
 - Nëse kërkojnë kontaktin ose adresën e email-it, jepu 'milotgjimnazi@yahoo.com' ose orientoji te: <a href='kontakt.html'><b>Kontakt</b></a>.
 - Nëse pyesin për strukturën ose udhëheqjen e shkollës, orientoji te: <a href='Organizimi.html'><b>Organizimi i shkollës</b></a>.
-Nëse të bëjnë pyetje që nuk kanë lidhje fare me shkollën ose arsimin, ktheji me mirësjellje përsëri te tema e Gjimnazit Milot.
+Nëse të bëjnë pyetje që nuk kanë lidhje fare med shkollën ose arsimin, ktheji me mirësjellje përsëri te tema e Gjimnazit Milot.
 `;
 
 app.post('/api/chat', async (req, res) => {
     const { pyetja } = req.body;
-    // Çelësi merret në mënyrë super të sigurt nga mjedisi i Render
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY; 
 
     try {
@@ -45,6 +42,7 @@ app.post('/api/chat', async (req, res) => {
         res.json({ text: pergjigjiaAI });
 
     } catch (error) {
+        console.error("Gabim në server:", error);
         res.status(500).json({ error: 'Gabim gjatë përpunimit në server' });
     }
 });
