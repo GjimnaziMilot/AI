@@ -91,7 +91,7 @@ Viti mësimor 1987-1988 shënon dhe fillimin e arsimit të mesëm të përgjiths
         <span onclick="toggleChat()">✖</span>
     </div>
     <div class="chat-messages" id="chatMessages">
-        <div class="message bot-msg">Përshëndetje! Unë jam asistenti i Gjimnazit Milot. Si mund t'ju ndihmoj sot?</div>
+        <div class="message bot-msg">Përshëndetje! Unë jam inteligjenca artificiale e Gjimnazit Milot. Më pyesni çfarë dëshironi të dini rreth shkollës sonë!</div>
     </div>
     <div class="chat-input-area">
         <input type="text" id="chatInput" placeholder="Shkruaj një pyetje..." onkeypress="handleKeyPress(event)">
@@ -108,7 +108,33 @@ Viti mësimor 1987-1988 shënon dhe fillimin e arsimit të mesëm të përgjiths
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <script>
-    const CONTEXT = "Ti je asistenti i Gjimnazit Milot. Përgjigju shkurt në shqip. Shkolla u hap në 1971 me degën Agronomi. Ndërtesa e re u bë në 1986. Arsimi i përgjithshëm nisi në 1987. Email: milotgjimnazi@yahoo.com. Organizojmë Festivalin e Shkencave.";
+    // 1. "Memoria" ose Databaza e njohurive të AI të shkollës suaj
+    const AI_KNOWLEDGE = [
+        {
+            keywords: ["pershendetje", "tung", "hejk", "miredita", "ca ben", "cfare ben"],
+            reply: "Përshëndetje! Unë jam inteligjenca artificiale e Gjimnazit Milot. Jam këtu për t'ju dhënë çdo informacion rreth historikut, kontakteve apo aktiviteteve të shkollës."
+        },
+        {
+            keywords: ["historia", "historiku", "themeluar", "hapur", "viti", "1971", "1986", "1987", "krijua"],
+            reply: "Historiku i Gjimnazit Milot:<br>• <b>Viti 1971-1972:</b> U hap Shkolla e Mesme pa shkëputje nga puna, dega Agronomi.<br>• <b>Viti 1986-1987:</b> U vu në punë ndërtesa e re e shkollës (Gjimnazi i sotëm).<br>• <b>Viti 1987-1988:</b> Shënon fillimin zyrtar të arsimit të mesëm të përgjithshëm në Milot."
+        },
+        {
+            keywords: ["kontakt", "email", "posta", "telefon", "kontaktoj", "yahoo", "shkruaj"],
+            reply: "Mund të na kontaktoni drejtpërdrejt përmes email-it tonë zyrtar: <b>milotgjimnazi@yahoo.com</b>, ose duke vizituar zyrën e sekretarisë në ambientet e shkollës sonë."
+        },
+        {
+            keywords: ["aktivitete", "olimpiada", "festivali", "shkencave", "facebook", "aktivitet", "lajme"],
+            reply: "Shkolla jonë është shumë aktive! Aktivitetet tona të fundit përfshijnë:<br>• <b>Festivali i Shkencave</b> (mund ta shikoni videon në faqen tonë në Facebook).<br>• Pjesëmarrja dhe organizimi i <b>Olimpiadave</b> lëndore."
+        },
+        {
+            keywords: ["matura", "shtetërore", "provime", "provimet", "diploma"],
+            reply: "Për informacionet më të fundit rreth Maturës Shtetërore, datat e provimeve dhe rregulloret, ju lutem klikoni në menunë e sipërme te tabi 'Matura Shtetërore'."
+        },
+        {
+            keywords: ["organizimi", "stafi", "drejtori", "mesuesit", "shkolla"],
+            reply: "Organizimi i brendshëm i shkollës, stafi pedagogjik dhe rregullorja mund të gjenden duke klikuar te tabi 'Organizimi i shkollës' në menunë kryesore."
+        }
+    ];
 
     function toggleChat() {
         const chat = document.getElementById('chatContainer');
@@ -119,39 +145,57 @@ Viti mësimor 1987-1988 shënon dhe fillimin e arsimit të mesëm të përgjiths
         if (e.key === 'Enter') sendMessage();
     }
 
-    async function sendMessage() {
+    // 2. Algoritmi i përpunimit të gjuhës natyrale (NLP)
+    function sendMessage() {
         const input = document.getElementById('chatInput');
-        const messageText = input.value.trim();
-        if (!messageText) return;
+        const userText = input.value.trim();
+        if (!userText) return;
 
-        appendMessage(messageText, 'user-msg');
+        appendMessage(userText, 'user-msg');
         input.value = '';
 
-        const loadingId = appendMessage('Duke menduar...', 'bot-msg');
+        // Pastrojmë tekstin e përdoruesit (heqim shenjat e pikësimit dhe e bëjmë me shkronja të vogla)
+        const cleanText = userText.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g,"");
+        const userWords = cleanText.split(" ");
 
-        try {
-            // Përdorim një API publike të hapur që nuk kërkon konfigurim në Render
-            const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(CONTEXT + "\n\nPërdoruesi pyet: " + messageText)}`);
-            const replyText = await response.text();
-            
-            document.getElementById(loadingId).remove();
-            appendMessage(replyText, 'bot-msg');
-        } catch (error) {
-            document.getElementById(loadingId).remove();
-            appendMessage('Më falni, sistemi është i mbingarkuar. Provoni përsëri.', 'bot-msg');
+        let bestMatch = null;
+        let maxScore = 0;
+
+        // Kontrollojmë matematikisht se ku përshtaten fjalët e përdoruesit
+        AI_KNOWLEDGE.forEach(item => {
+            let score = 0;
+            userWords.forEach(word => {
+                if (item.keywords.includes(word)) {
+                    score += 1; // Sa më shumë fjalë kyçe të gjejë, aq më i lartë është rezultati
+                }
+            });
+
+            if (score > maxScore) {
+                maxScore = score;
+                bestMatch = item;
+            }
+        });
+
+        // 3. Kthimi i përgjigjes inteligjente
+        let aiReply = "Më falni, nuk e kuptova plotësisht pyetjen tuaj. Mund të më pyesni për historikun e shkollës, kontaktin, aktivitetet, maturën shtetërore ose organizimin!";
+        
+        if (maxScore > 0 && bestMatch) {
+            aiReply = bestMatch.reply;
         }
+
+        // Shfaqet me një vonesë të vogël artificiale prej 400ms për t'u dukur sikur AI po mendon
+        setTimeout(() => {
+            appendMessage(aiReply, 'bot-msg');
+        }, 400);
     }
 
     function appendMessage(text, className) {
         const messagesDiv = document.getElementById('chatMessages');
         const messageBubble = document.createElement('div');
-        const id = 'msg-' + Date.now();
-        messageBubble.id = id;
         messageBubble.className = `message ${className}`;
-        messageBubble.innerText = text;
+        messageBubble.innerHTML = text;
         messagesDiv.appendChild(messageBubble);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        return id;
     }
 </script>
 
