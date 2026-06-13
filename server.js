@@ -3,14 +3,14 @@ const cors = require('cors');
 
 const app = express();
 
-// 1. Mundësojmë CORS për të gjitha rrugët përmes paketës
+// 1. Aktivizimi i gjerë i CORS
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// 2. Blindim manual i CORS me Middleware për siguri maksimale
+// 2. Blindimi i sigurisë për kërkesat e jashtme
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -55,12 +55,19 @@ app.post('/api/chat', async (req, res) => {
         });
 
         const data = await response.json();
-        const pergjigjiaAI = data.candidates[0].content.parts[0].text;
-        res.json({ text: pergjigjiaAI });
+        
+        // 🛠️ VALIDIMI: Sigurohemi që ekziston rruga përpara se të nxjerrim tekstin
+        if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
+            const pergjigjiaAI = data.candidates[0].content.parts[0].text;
+            res.json({ text: pergjigjiaAI });
+        } else {
+            console.error("Strukturë e gabuar nga Google API:", JSON.stringify(data));
+            res.json({ text: "Më falni, nuk arrita të procesoj përgjigjen e saktë. Provoni përsëri!" });
+        }
 
     } catch (error) {
         console.error("Gabim në server:", error);
-        res.status(500).json({ error: 'Gabim gjatë përpunimit në server' });
+        res.status(500).json({ text: 'Gabim gjatë komunikimit të serverit me inteligjencën artificiale.' });
     }
 });
 
