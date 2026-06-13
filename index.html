@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gjimnazi Milot - Faqja Zyrtare</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="AI.css">
+    <link rel="stylesheet" href="gjimnazimilot.css">
 </head>
 <body>
 
@@ -61,6 +61,7 @@ Viti mësimor 1987-1988 shënon dhe fillimin e arsimit të mesëm të përgjiths
   <a href="mailto:milotgjimnazi@yahoo.com">Email: milotgjimnazi@yahoo.com</a>
 </footer>
 
+<!-- 🚀 STRUKTURA E ASISTENTIT VIRTUAL -->
 <div class="gemini-chat-container">
     <button class="gemini-chat-btn" id="openGeminiBtn">💬 Asistenti Milot</button>
     
@@ -73,7 +74,7 @@ Viti mësimor 1987-1988 shënon dhe fillimin e arsimit të mesëm të përgjiths
             <div class="gemini-msg bot-msg">
                 Përshëndetje! Unë jam Inteligjenca Artificiale e Gjimnazit Milot. 🏫 Si mund t'ju ndihmoj sot? 
                 <br><br>
-                Mund të më pyesni për: <b>historikun, njoftimet, maturën shtetërore ose kontaktin</b>.
+                Mund të më pyesni për: <b>orarin, regjistrimet, stafin, ose kontaktin</b>.
             </div>
         </div>
         <div class="gemini-input-area">
@@ -83,6 +84,7 @@ Viti mësimor 1987-1988 shënon dhe fillimin e arsimit të mesëm të përgjiths
     </div>
 </div>
 
+<!-- 🎨 STILIMI I ASISTENTIT (CSS) -->
 <style>
     .gemini-chat-container { position: fixed; bottom: 20px; right: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; z-index: 1000; }
     .gemini-chat-btn { background-color: #003366; color: white; border: none; padding: 14px 22px; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); font-weight: bold; font-size: 15px; }
@@ -101,6 +103,7 @@ Viti mësimor 1987-1988 shënon dhe fillimin e arsimit të mesëm të përgjiths
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<!-- 🧠 LOGJIKA E ASISTENTIT (JAVASCRIPT) -->
 <script>
     const openBtn = document.getElementById('openGeminiBtn');
     const closeBtn = document.getElementById('closeGeminiBtn');
@@ -133,7 +136,7 @@ Viti mësimor 1987-1988 shënon dhe fillimin e arsimit të mesëm të përgjiths
         const mesazhiPritjes = shtoMesazh("<i>Duke menduar...</i>", 'bot-msg');
 
         try {
-            // 🔥 NDRYSHIMI ZYRTAR: Tani kërkesa shkon saktësisht te serveri yt 'ai-vely'
+            // Lidhja direkte e sigurt me backend-in në Render
             const response = await fetch('https://ai-vely.onrender.com/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -141,10 +144,16 @@ Viti mësimor 1987-1988 shënon dhe fillimin e arsimit të mesëm të përgjiths
             });
 
             const data = await response.json();
-            mesazhiPritjes.innerHTML = data.text;
+            
+            // Kontroll i fortë për të shmangur shfaqjen e 'undefined'
+            if (data && data.text) {
+                mesazhiPritjes.innerHTML = data.text;
+            } else {
+                mesazhiPritjes.innerHTML = "Më falni, ndodhi një gabim me strukturën e përgjigjes.";
+            }
 
         } catch (error) {
-            console.error("Gabim:", error);
+            console.error("Gabim komunikimi:", error);
             mesazhiPritjes.innerHTML = "Ndodhi një gabim gjatë komunikimit me asistentin.";
         }
     }
