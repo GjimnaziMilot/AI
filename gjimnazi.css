@@ -1,3 +1,7 @@
+/* ==========================================================================
+   Gjimnazi Milot - Skedari i Plotë CSS (I rregulluar për Slider-in)
+   ========================================================================== */
+
 /* Ngjyrat dhe rregullat e përgjithshme */
 body {
     background-color: #f4f4f4;
@@ -63,6 +67,7 @@ body {
     background-color: #ffffff;
 }
 
+/* Përshtatja e Navigacionit për Celular */
 @media (max-width: 767px) {
     .navbar-custom .navbar-collapse {
         background-color: #1a2a6c;
@@ -94,18 +99,26 @@ body {
     }
 }
 
-/* Pjesa Hero (Fotoja Kryesore) */
-.hero-section {
-    width: 100%;
-    margin-bottom: 20px;
+/* ==========================================================================
+   MAGJIA E FOTOS: KJO PJESË SHTYHP STILIN INLINE DHE BËN PRERJEN NGA POSHTË
+   ========================================================================== */
+
+/* Ky selektor i gjatë mposht kodin e HTML-së dhe aplikon rregullat e reja */
+.hero-section .carousel-custom-container .carousel-custom-inner .carousel-custom-item img {
+    width: 100% !important;
+    height: 420px !important; /* Lartësia e fiksuar si baner kompakt për kompjuter */
+    object-fit: cover !important;
+    /* Përqindja 20% e ngre foton lart, duke prerë oborrin e tepërt poshtë dhe duke shfaqur godinën e plotë */
+    object-position: center 20% !important; 
+    display: block;
 }
 
-.hero-image {
-    width: 100%;
-    height: 530px !important; /* Kjo e detyron foton të mbetet e ulët */
-    display: block;
-    object-fit: cover; 
-    object-position: center 8%; /* Kjo i thotë shfletuesit ta ulë fokusin poshtë te shkallët dhe dera */
+/* Rregullimi automatik që baneri të ulet në lartësi dhe të duket perfekt edhe në Celular */
+@media (max-width: 767px) {
+    .hero-section .carousel-custom-container .carousel-custom-inner .carousel-custom-item img {
+        height: 240px !important; /* Lartësia e banerit në celular */
+        object-position: center 20% !important;
+    }
 }
 
 /* Butonat */
@@ -124,13 +137,12 @@ body {
 
 /* Seksioni i informacionit */
 .seksion-informacion {
-    max-width: 1500px;
+    max-width: 1000px;
     margin: 20px auto 50px;
     padding: 40px;
     background: white;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    
 }
 
 .seksion-informacion h2 {
@@ -140,7 +152,7 @@ body {
 
 .seksion-informacion p {
     line-height: 1.7;
-    color: #333;object- position:center;
+    color: #333;
 }
 
 .panel-lajme {
@@ -157,7 +169,6 @@ body {
     padding: 40px 0;
     margin-top: 50px;
 }
-
 .footer-serioz a {
     color: #ffffff;
 }
